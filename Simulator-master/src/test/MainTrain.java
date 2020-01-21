@@ -61,7 +61,6 @@ public class MainTrain {
 	
 		
 	  int t4 = MyInterpreter.interpret(test4); 
-		System.out.println("!!!!!!t4: " + t4);
 		 if(t4!=sim.simX+sim.simY*sim.simZ)
 			  System.out.println("failed test4 (-20)");
 		  else System.out.println("t4: " + t4);

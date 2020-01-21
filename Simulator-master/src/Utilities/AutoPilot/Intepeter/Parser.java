@@ -8,7 +8,6 @@ import test.MyInterpreter;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-//import javax.activation.CommandMap;
 
 public class Parser {
     private final HashMap<String, Command> commandMap;

@@ -32,38 +32,16 @@ public class OpenDSCommand implements Command {
                         String line = br.readLine();
                         if (line == null) continue;
                         String[] variables = line.split(",");
-                        ConcurrentHashMap<String, Double> serverValues = Parser.getInstance().getBindVarValueMap();
-                        /*serverValues.put("/instrumentation/airspeed-indicator/indicated-speed-kt", Double.parseDouble(variables[0]));
-                        serverValues.put("/instrumentation/altimeter/indicated-altitude-ft", Double.parseDouble(variables[1]));
-                        serverValues.put("/instrumentation/altimeter/pressure-alt-ft", Double.parseDouble(variables[2]));
-                        serverValues.put("/instrumentation/attitude-indicator/indicated-pitch-deg", Double.parseDouble(variables[3]));
-                        serverValues.put("/instrumentation/attitude-indicator/indicated-roll-deg", Double.parseDouble(variables[4]));
-                        serverValues.put("/instrumentation/attitude-indicator/internal-pitch-deg", Double.parseDouble(variables[5]));
-                        serverValues.put("/instrumentation/attitude-indicator/internal-roll-deg", Double.parseDouble(variables[6]));
-                        serverValues.put("/instrumentation/encoder/indicated-altitude-ft", Double.parseDouble(variables[7]));
-                        serverValues.put("/instrumentation/encoder/pressure-alt-ft", Double.parseDouble(variables[8]));
-                        serverValues.put("/instrumentation/gps/indicated-altitude-ft", Double.parseDouble(variables[9]));
-                        serverValues.put("/instrumentation/gps/indicated-ground-speed-kt", Double.parseDouble(variables[10]));
-                        serverValues.put("/instrumentation/gps/indicated-vertical-speed", Double.parseDouble(variables[11]));
-                        serverValues.put("/instrumentation/heading-indicator/indicated-heading-deg", Double.parseDouble(variables[12]));
-                        serverValues.put("/instrumentation/magnetic-compass/indicated-heading-deg", Double.parseDouble(variables[13]));
-                        serverValues.put("/instrumentation/slip-skid-ball/indicated-slip-skid", Double.parseDouble(variables[14]));
-                        serverValues.put("/instrumentation/turn-indicator/indicated-turn-rate", Double.parseDouble(variables[15]));
-                        serverValues.put("/instrumentation/vertical-speed-indicator/indicated-speed-fpm", Double.parseDouble(variables[16]));
-                        serverValues.put("/controls/flight/aileron", Double.parseDouble(variables[17]));
-                        serverValues.put("/controls/flight/elevator", Double.parseDouble(variables[18]));
-                        serverValues.put("/controls/flight/rudder", Double.parseDouble(variables[19]));
-                        serverValues.put("/controls/flight/flaps", Double.parseDouble(variables[20]));
-                        serverValues.put("/controls/engines/engine/throttle", Double.parseDouble(variables[21]));
-                        serverValues.put("/engines/engine/rpm", Double.parseDouble(variables[22]));
-                        */if(!sentOnce) {
+                      ConcurrentHashMap<String, Double> serverValuesTest=Parser.getInstance().getBindVarValueMap();                      
+                      serverValuesTest.put("simX", Double.parseDouble(variables[0]));
+                      serverValuesTest.put("simY", Double.parseDouble(variables[1]));
+                      serverValuesTest.put("simZ", Double.parseDouble(variables[2]));
+                        
+                        if(!sentOnce) {
                             synchronized (this) {
                             	stopTimer();
-                            	Simulator simulator = new Simulator();
-                            	simulator.close();
                                 notifyAll();
                             }
-                            //sentOnce = true;
                         }
                         try {
                             Thread.sleep(1000 / timesASec);
@@ -82,37 +60,6 @@ public class OpenDSCommand implements Command {
         }
     }
  
-	private void runServer(int myPort){
-		try {
-			ServerSocket server=new ServerSocket(myPort);
-			server.setSoTimeout(1000);
-			while(!stop){
-				try{
-					Socket client=server.accept();
-					BufferedReader in=new BufferedReader(new InputStreamReader(client.getInputStream()));
-					String line=null;
-					while(!(line=in.readLine()).equals("bye")){
-						try{
-							if(line.startsWith("set simX"))
-								System.out.println("set simX" + line.split(" ")[2]);
-							//	simX=Double.parseDouble(line.split(" ")[2]);
-							if(line.startsWith("set simY"))
-								System.out.println("set simY" + line.split(" ")[2]);
-							//	simY=Double.parseDouble(line.split(" ")[2]);
-							if(line.startsWith("set simZ"))
-								System.out.println("set simZ" + line.split(" ")[2]);
-							//	simZ=Double.parseDouble(line.split(" ")[2]);
-						}catch(NumberFormatException e){}
-					}
-					in.close();
-					client.close();
-				}catch(SocketTimeoutException e){}
-			}
-			server.close();
-		} catch (IOException e) {}
-	}
-
-    
     @Override
     public void doCommand(List<Object> args) {
         stop = false;
@@ -124,21 +71,12 @@ public class OpenDSCommand implements Command {
             } catch (InterruptedException e) {
             }
         }
-        //Simulator simulator = new Simulator();
-       // new Thread(()-> runServer((int) args.get(1))).start();
-        
-        //Parser p = Parser.getInstance();
-       // p.myModel.setModelChanged();
-        Integer i = 1;
-        //p.myModel.notifyObservers(i);
-       synchronized (i) {
-            try {
-                i.wait();
-            } catch (InterruptedException ignored) {}
-        }
-       stopTimer();
+              
     }
+    
+    
     public void stopTimer(){
         stop = true;
     }
+    
 }

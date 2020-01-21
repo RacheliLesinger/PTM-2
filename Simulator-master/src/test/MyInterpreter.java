@@ -18,9 +18,9 @@ public class MyInterpreter {
 		for(String line: lines)
 		{
 			try {
- // return (int)interp.autoFly(line);
-  return (int)interp.autoFly(String.join(" ", lines));
-				//return (int)interp.autoFly(Arrays.toString(lines));
+                // return (int)interp.autoFly(line);
+                   return (int)interp.autoFly(String.join(" ", lines));
+			
 			} 
 			catch (CodeErrorException e) {
 				// TODO Auto-generated catch block
@@ -31,18 +31,7 @@ public class MyInterpreter {
 	}
 	
 	public  double autoFly(String code) throws CodeErrorException  {
-		return  Parser.getInstance().parse(code, this);
-        /*f=CompletableFuture.supplyAsync(()-> {
-            try {
-                Parser.getInstance().parse(code, this);
-                isAutoPilotOn = true;
-            } catch (CodeErrorException e) {
-                return false;
-            } catch (CancellationException e){
-            }
-            return true;
-        });*/
-        
+		return  Parser.getInstance().parse(code, this);        
         
     }
 
