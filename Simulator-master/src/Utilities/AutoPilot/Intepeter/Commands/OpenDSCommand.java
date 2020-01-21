@@ -48,7 +48,8 @@ public class OpenDSCommand implements Command {
                         } catch (InterruptedException e1) {
                         }
                     }
-                }catch(SocketTimeoutException e){/*didn't get client in this second*/}
+                }
+                catch(SocketTimeoutException e){}
             }
         } catch (IOException e) {}
         if(br != null) {
